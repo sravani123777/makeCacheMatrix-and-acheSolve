@@ -1,0 +1,62 @@
+
+R version 3.6.3 (2020-02-29) -- "Holding the Windsock"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> makeVector <- function(x = numeric()) {
++      m <- NULL
++      set <- function(y) {
++           x <<- y
++           m <<- NULL
++      }
++      get <- function() x
++      setmean <- function(mean) m <<- mean
++      getmean <- function() m
++      list(set = set, get = get,
++           setmean = setmean,
++           getmean = getmean)
++ }
+> cachemean <- function(x, ...) {
++      m <- x$getmean()
++      if(!is.null(m)) {
++           message("getting cached data")
++           return(m)
++      }
++      data <- x$get()
++      m <- mean(data, ...)
++      x$setmean(m)
++      m
++ }
+> mvec <- makeVector()
+>  x <- 1:4
+>  mvec$set(x)
+>  mvec$get()
+[1] 1 2 3 4
+> [1] 1 2 3 4
+Error: unexpected '[' in "["
+>  mvec$getmean()
+NULL
+> NULL
+NULL
+> mvec$setmean(3.4)
+>  mvec$getmean()
+[1] 3.4
+> 3.4
+[1] 3.4
+> 
